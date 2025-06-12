@@ -1,0 +1,1 @@
+mitmproxy -k --set stream_large_bodies=100m --set block_global=false --mode local -s .\proxy.py
