@@ -20,8 +20,4 @@
     <ProjectReference Include="..\YotsubaBestGirl.Common\YotsubaBestGirl.Common.csproj" />
     <ProjectReference Include="..\YotsubaBestGirl.PcapParser\YotsubaBestGirl.PcapParser.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
 </Project>

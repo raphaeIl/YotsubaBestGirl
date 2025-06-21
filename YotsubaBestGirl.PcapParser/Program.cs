@@ -4,9 +4,10 @@
     {
         public static void Main(string[] args)
         {
-            PcapParser.Instance.LoadAllPackets();
+            //PcapParser.Instance.LoadAllPackets();
+            PcapParser.Instance.Parse("gacha_packets.json");
 
-            PcapParser.Instance.SavePackets("parsed_login_packets.json");
+            PcapParser.Instance.SavePackets("parsed_gacha_packets.json");
         }
     }
 }

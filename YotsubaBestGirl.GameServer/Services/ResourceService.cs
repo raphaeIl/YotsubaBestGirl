@@ -9,7 +9,7 @@ using YotsubaBestGirl.Proto.Pcommon;
 using YotsubaBestGirl.Proto.Pmaster;
 using YotsubaBestGirl.Proto.Proto;
 
-namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
+namespace YotsubaBestGirl.GameServer.Services
 {
     public class ResourceService
     {
@@ -33,7 +33,7 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
                 return (T)resource;
             }
 
-            return default(T);
+            return default;
         }
 
         private void LoadResources()

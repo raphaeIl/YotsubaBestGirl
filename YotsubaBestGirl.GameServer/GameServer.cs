@@ -2,6 +2,7 @@ using System.Reflection;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Serilog;
 using YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers;
+using YotsubaBestGirl.GameServer.Services;
 
 namespace YotsubaBestGirl.GameServer
 {
@@ -10,7 +11,6 @@ namespace YotsubaBestGirl.GameServer
         public static void Main(string[] args)
         {
             Log.Information("Starting GameServer...");
-            PcapParser.PcapParser.Instance.LoadAllPackets();
 
             try
             {
