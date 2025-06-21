@@ -26,18 +26,6 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
 
     public class ProtocolHandlerFactory : IProtocolHandlerFactory
     {
-        public static readonly Dictionary<string, Protocol> ProtocolIdToRouteMappings = new Dictionary<string, Protocol>()
-        {
-            ["AccountAuthorize"] = Protocol.AccountAuthorize,
-            ["AccountCertificate"] = Protocol.AccountCertificate,
-            ["UserLoad"] = Protocol.UserLoad,
-            ["ResourceListAndroid"] = Protocol.ResourceListAndroid,
-            ["ShopProducts"] = Protocol.ShopProducts,
-            ["FcmToken"] = Protocol.FcmToken,
-            ["MasterAll"] = Protocol.MasterAll,
-            ["GachaPurchase"] = Protocol.GachaPurchase,
-        };
-
         private readonly Dictionary<Protocol, MethodInfo> handlers = [];
         private readonly Dictionary<Type, object?> handlerInstances = [];
 
@@ -78,18 +66,6 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
             handlers.TryGetValue(msgId, out var handler);
 
             return handler;
-        }
-
-        public static Protocol GetRequestProtocolByProtocolName(string msgId)
-        {
-            if (!ProtocolHandlerFactory.ProtocolIdToRouteMappings.ContainsKey(msgId))
-            {
-                return Protocol.Unknown;
-            }
-
-            Protocol protocolId = ProtocolHandlerFactory.ProtocolIdToRouteMappings[msgId];
-
-            return protocolId;
         }
     }
 

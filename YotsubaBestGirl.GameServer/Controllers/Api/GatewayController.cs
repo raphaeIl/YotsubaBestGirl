@@ -28,14 +28,10 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api
         [HttpGet, HttpPost]
         public void PostRequest(string path)
         {
-            Account.SessionToken = Request.Headers["X-Enish-App-Session"];
             bool doGzip = false;
             Log.Information("Gateway Post Request from: {path}", path);
 
-            string protocolId = $"{Util.ConvertToPascalCase(path)}";
-            Log.Information("protocolId ConvertToPascalCase: " + protocolId);
-
-            Protocol protocol = ProtocolHandlerFactory.GetRequestProtocolByProtocolName(protocolId);
+            Protocol protocol = Util.GetProtocolFromRoute(path);
 
             if (protocol == Protocol.Unknown)
             {
@@ -112,9 +108,20 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api
             HttpContext.Response.Headers["Connection"] = "keep-alive";
             HttpContext.Response.Headers["Vary"] = "Accept-Encoding";
             HttpContext.Response.Headers["X-Enish-App-Review"] = "false";
-            HttpContext.Response.Headers["X-Enish-App-Version-Check"] = "1";
-            HttpContext.Response.Headers["X-Enish-App-Version-Master"] = "1495";
-            HttpContext.Response.Headers["X-Enish-App-Version-Resource"] = "1906";
+
+            if (protocol == Protocol.resource_list_Android)
+            {
+                HttpContext.Response.Headers["X-Enish-App-Resource-Cnt"] = "54055";
+            }
+
+            else
+            {
+                HttpContext.Response.Headers["X-Enish-App-Version-Check"] = "1";
+                HttpContext.Response.Headers["X-Enish-App-Version-Master"] = Config.MasterVersion.ToString();
+                HttpContext.Response.Headers["X-Enish-App-Version-Resource"] = Config.ResourceVersion.ToString();
+            }
+
+            
             HttpContext.Response.Headers["X-Enish-Date"] = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
             HttpContext.Response.Headers["Strict-Transport-Security"] = "max-age=15724800; includeSubDomains";
 

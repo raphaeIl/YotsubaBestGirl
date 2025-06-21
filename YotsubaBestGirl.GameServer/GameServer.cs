@@ -24,6 +24,7 @@ namespace YotsubaBestGirl.GameServer
                 builder.Services.AddControllers();
                 builder.Services.AddProtocolHandlerFactory();
                 builder.Services.AddControllers().AddApplicationPart(Assembly.GetAssembly(typeof(GameServer)));
+                builder.Services.AddResourceService();
 
                 // Add all Handler Groups
                 var handlerGroups = Assembly.GetAssembly(typeof(ProtocolHandlerFactory))

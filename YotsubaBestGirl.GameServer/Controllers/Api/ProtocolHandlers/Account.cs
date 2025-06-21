@@ -1,6 +1,6 @@
 ﻿using Google.Protobuf;
 using Serilog;
-using System.Net.Sockets;
+using YotsubaBestGirl.Common.Utils;
 using YotsubaBestGirl.Core;
 using YotsubaBestGirl.Proto.Pcommon;
 using YotsubaBestGirl.Proto.Proto;
@@ -10,14 +10,14 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
 {
     public class Account : ProtocolHandlerBase
     {
-        public static string SessionToken = "";
+        private readonly ResourceService resourceService;
 
-        public Account(IProtocolHandlerFactory protocolHandlerFactory) : base(protocolHandlerFactory)
+        public Account(IProtocolHandlerFactory protocolHandlerFactory, ResourceService _resourceService) : base(protocolHandlerFactory)
         {
-
+            resourceService = _resourceService;
         }
 
-        [ProtocolHandler(Protocol.AccountAuthorize)]
+        [ProtocolHandler(Protocol.account_authorize)]
         public AccountAuthorize AccountAuthorizeHandler(IQueryCollection? reqParams)
         {
             return new AccountAuthorize()
@@ -39,7 +39,7 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
             };
         }
 
-        [ProtocolHandler(Protocol.AccountCertificate)]
+        [ProtocolHandler(Protocol.account_certificate)]
         public AccountCertificate AccountCertificateHandler(IQueryCollection? reqParams)
         {
             return new AccountCertificate()
@@ -49,38 +49,27 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
                 {
                     Platform = "android",
                     Application = "1.43.440",
-                    Resource = 1906,
-                    Master = 1495,
+                    Resource = Config.ResourceVersion,
+                    Master = Config.MasterVersion,
                     Term = 2,
                     Revision = 2
                 }
             };
         }
 
-        [ProtocolHandler(Protocol.ResourceListAndroid)]
-        public Proto.Pcommon.Resources ResourceListAndroidHandler(IQueryCollection? reqParams)
+        [ProtocolHandler(Protocol.resource_list_Android)]
+        public Resources ResourceListAndroidHandler(IQueryCollection? reqParams)
         {
-            var respPcap = (Resources)PcapParser.PcapParser.Instance.GetPcapPacket(Protocol.ResourceListAndroid);
-
-            //var resp = new Resources();
-
-            //foreach (var entry in respPcap.Resource.Take(10).ToList())
-            //{
-            //    resp.Resource[entry.Key] = entry.Value;  // overwrite or insert
-            //}
-
-            return respPcap;
-
-            //return new Proto.Pcommon.Resources()
-            //{
-            //    Resource =
-            //    {
-            //        { 1030269, new ResourceInfo() { Hash = "2b878cc0b56cbc84c95e99bedb4357e1", Size = 237973 } }
-            //    }
-            //};
+            return resourceService.GetResource<Resources>(Protocol.resource_list_Android);
         }
 
-        [ProtocolHandler(Protocol.UserLoad)]
+        [ProtocolHandler(Protocol.master_all)]
+        public Proto.Pmaster.All MasterAllHandler(IQueryCollection? reqParams)
+        {
+            return resourceService.GetResource<Proto.Pmaster.All>(Protocol.master_all);
+        }
+
+        [ProtocolHandler(Protocol.user_load)]
         public Proto.Proto.Nocontent UserLoadHandler(IQueryCollection? reqParams)
         {
             var data = new StoredData
@@ -314,7 +303,7 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
             //    StoredData = data
             //};
 
-            var pcapResp = (Proto.Proto.Nocontent)PcapParser.PcapParser.Instance.GetPcapPacket(Protocol.UserLoad);
+            var pcapResp = (Proto.Proto.Nocontent)PcapParser.PcapParser.Instance.GetPcapPacket(Protocol.user_load);
 
             pcapResp.StoredData.Currency = new Currency
             {
@@ -329,7 +318,7 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
             return pcapResp;
         }
 
-        [ProtocolHandler(Protocol.FcmToken)]
+        [ProtocolHandler(Protocol.fcm_token)]
         public Proto.Proto.Nocontent FcmTokenHandler(IQueryCollection? reqParams)
         {
             return new Proto.Proto.Nocontent()
@@ -365,18 +354,10 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
             };
         }
 
-        [ProtocolHandler(Protocol.MasterAll)]
-        public Proto.Pmaster.All MasterAllHandler(IQueryCollection? reqParams)
-        {
-            var pcapResp = (Proto.Pmaster.All)PcapParser.PcapParser.Instance.GetPcapPacket(Protocol.MasterAll);
-
-            return pcapResp;
-        }
-
-        [ProtocolHandler(Protocol.GachaPurchase)]
+        [ProtocolHandler(Protocol.gacha_purchase)]
         public Proto.Proto.GachaResult GachaPurchaseHandler(IQueryCollection? reqParams)
         {
-            var pcapResp = (Proto.Proto.GachaResult)PcapParser.PcapParser.Instance.GetPcapPacket(Protocol.GachaPurchase);
+            var pcapResp = (Proto.Proto.GachaResult)PcapParser.PcapParser.Instance.GetPcapPacket(Protocol.gacha_purchase);
 
             var templateCard = pcapResp.Cards[2];
 
@@ -390,25 +371,33 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
             return pcapResp;
         }
 
-        [ProtocolHandler(Protocol.ShopProducts)]
-        public Proto.Proto.IAPProductList ShopProductsHandler(IQueryCollection? reqParams)
+        [ProtocolHandler(Protocol.shop_products)]
+        public Proto.Proto.IAPProductList ShopProductsHandler(IQueryCollection? reqParams) // one case of reqParams being used, there are two it can be all=1 or all=1, resp prob different depending on that
         {
-            IMessage[] pcapPackets = PcapParser.PcapParser.Instance.GetAllPcapPacketOfType(Protocol.ShopProducts);
-
-            string all = reqParams["all"];
-
-            Log.Information("Received ShopProducts with all: " + all);
-
-            if (all == "1")
+            // this is not the full list at all, the full shit is like 16k lines no way im coding that, so shop prob broken for now
+            var resp = new IAPProductList()
             {
-                return (IAPProductList)pcapPackets[0];
-            }
-            else if (all == "0")
-            {
-                return (IAPProductList)pcapPackets[1];
-            }
+                List =
+                {
+                    new IAPProduct()
+                    {
+                        Id = 2,
+                        ProductId = "leo30000",
+                        Name = "aaa",
+                        ConsumeType = "consumable",
+                        SellingType = "normal",
+                        Price = 120,
+                        Coin = 100,
+                        Enabled = true,
+                        StartTime = 0,
+                        EndTime = 0,
+                        PurchaseCount = 0,
+                        PurchaseCountMax = 0
+                    }
+                }
+            };
 
-            return null;
+            return resp;
         }
 
     }

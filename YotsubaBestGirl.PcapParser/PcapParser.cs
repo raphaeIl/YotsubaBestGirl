@@ -16,15 +16,11 @@ namespace YotsubaBestGirl.PcapParser
 {
     public class PcapParser : Singleton<PcapParser>
     {
-        public static string ResourceDir = Path.Join(Path.GetDirectoryName(AppContext.BaseDirectory), "Resources");
-        public static string PcapDir = Path.Join(ResourceDir, "packets");
-
         public List<YotsubaPacket> packets = new List<YotsubaPacket>();
 
         public void LoadAllPackets()
         {
-            // these are all the packets i have, should've done more but ran out of time :/
-            PcapParser.Instance.Parse("gacha_packets.json");
+            PcapParser.Instance.Parse("login_packets.json");
         }
 
         public IMessage[] GetAllPcapPacketOfType(Protocol protocol)
@@ -49,13 +45,19 @@ namespace YotsubaBestGirl.PcapParser
 
         public void Parse(string pcapFileName)
         {
-            string pcapJsonFile = File.ReadAllText(Path.Combine(PcapDir, pcapFileName));
+            string pcapJsonFile = File.ReadAllText(Path.Combine(Config.PcapDir, pcapFileName));
             var data = System.Text.Json.JsonSerializer.Deserialize<List<PcapPacket>>(pcapJsonFile);
 
             foreach (PcapPacket packet in data)
             {
                 // parse packet and add to packet list here
                 IMessage parsedPacket = null;
+
+                if (packet.type == "REQUEST")
+                {
+                    continue;
+                }
+
                 byte[] payload = Convert.FromBase64String(packet.payload);
 
                 string protocolNamespace = packet.protocol.Split(".")[0];
@@ -67,9 +69,7 @@ namespace YotsubaBestGirl.PcapParser
 
                 Console.WriteLine("received url: " + result);
 
-                string urlProtocol = Util.ConvertToPascalCase(result);
-                Console.WriteLine("urlProtocol: " + urlProtocol);
-                Protocol protocol = GetRequestProtocolByProtocolName(urlProtocol);
+                Protocol protocol = Util.GetProtocolFromRoute(result);
                 Console.WriteLine("protocol: " + protocol);
 
                 if (protocol == Protocol.Unknown)
@@ -110,37 +110,13 @@ namespace YotsubaBestGirl.PcapParser
         public void SavePackets(string saveFileName)
         {
             Console.WriteLine($"Got {packets.Count} packet(s) out a total of x");
-            File.WriteAllText($"{PcapDir}/{saveFileName}", JsonConvert.SerializeObject(packets, Formatting.Indented));
+            File.WriteAllText($"{Config.PcapDir}/{saveFileName}", JsonConvert.SerializeObject(packets, Formatting.Indented));
         }
 
 
         public static byte[] ConvertStringToByteArray(string input)
         {
             return input.Trim('[', ']').Split(',').Select(byte.Parse).ToArray();
-        }
-
-        public static readonly Dictionary<string, Protocol> ProtocolIdToRouteMappings = new Dictionary<string, Protocol>()
-        {
-            ["AccountAuthorize"] = Protocol.AccountAuthorize,
-            ["AccountCertificate"] = Protocol.AccountCertificate,
-            ["UserLoad"] = Protocol.UserLoad,
-            ["ResourceListAndroid"] = Protocol.ResourceListAndroid,
-            ["ShopProducts"] = Protocol.ShopProducts,
-            ["FcmToken"] = Protocol.FcmToken,
-            ["MasterAll"] = Protocol.MasterAll,
-            ["GachaPurchase"] = Protocol.GachaPurchase,
-        };
-
-        public static Protocol GetRequestProtocolByProtocolName(string msgId)
-        {
-            if (!ProtocolIdToRouteMappings.ContainsKey(msgId))
-            {
-                return Protocol.Unknown;
-            }
-
-            Protocol protocolId = ProtocolIdToRouteMappings[msgId];
-
-            return protocolId;
         }
     }
 

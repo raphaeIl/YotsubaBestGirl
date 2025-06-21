@@ -6,7 +6,7 @@
         {
             PcapParser.Instance.LoadAllPackets();
 
-            PcapParser.Instance.SavePackets("parsed_gacha_packets.json");
+            PcapParser.Instance.SavePackets("parsed_login_packets.json");
         }
     }
 }
