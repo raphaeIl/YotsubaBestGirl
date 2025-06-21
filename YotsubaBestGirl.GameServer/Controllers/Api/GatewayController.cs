@@ -45,7 +45,7 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api
                 reqBody = reader.ReadToEnd();
             }
 
-            Log.Information("reqBody: " + reqBody);
+            //Log.Information("reqBody: " + reqBody);
 
             //Type packetClassType = Assembly.GetAssembly(typeof(AccountAuthorize))!.GetTypes().Where(x => x.Name == protocol.ToString()).SingleOrDefault();
 
@@ -53,79 +53,26 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api
 
             // resp
             var query = HttpContext.Request.Query;
-            IMessage? respPacket = protocolHandlerFactory.Invoke(protocol, query);
 
-            if (respPacket is null)
+            HttpMessage respMessage = protocolHandlerFactory.Invoke(protocol, query);
+
+            if (respMessage is null)
             {
                 Log.Error("Protocol {protocol} is unimplemented and left unhandled", protocol);
 
                 return;
             }
 
-            byte[] respBytes = respPacket.ToByteArray();
-
-            //if (protocol == Protocol.UserLoad || protocol == Protocol.FcmToken || protocol == Protocol.AccountCertificate || protocol == Protocol.AccountAuthorize)
-            //{
-            //    respBytes = PcapParser.PcapParser.Instance.GetRawPacket(protocol).Payload;
-            //    Log.Information($"returning raw bytes for {protocol.ToString()} of size: " + respBytes.Length);
-            //}
-
-            //else if (protocol == Protocol.ShopProducts)
-            //{
-            //    doGzip = true;
-            //    string all = query["all"];
-
-            //    Log.Information("Received ShopProducts with all: " + all);
-            //    YotsubaPacket[] pcapPackets = PcapParser.PcapParser.Instance.GetRawPackets(Protocol.ShopProducts);
-
-            //    if (all == "1")
-            //    {
-            //        respBytes = pcapPackets[0].Payload;
-            //    }
-            //    else if (all == "0")
-            //    {
-            //        respBytes = pcapPackets[1].Payload;
-            //    }
-            //}
-
-            //if (respBytes.Length > 1000 || doGzip)
-            //{
-            //    using (var output = new MemoryStream())
-            //    {
-            //        using (var gzip = new GZipStream(output, CompressionLevel.Fastest, leaveOpen: true))
-            //        {
-            //            gzip.Write(respBytes, 0, respBytes.Length);
-            //        }
-            //        respBytes = output.ToArray();
-            //    }
-
-            //    HttpContext.Response.Headers["Content-Encoding"] = "gzip";
-            //}
+            byte[] respBytes = respMessage.Packet.ToByteArray();
 
             HttpContext.Response.ContentType = "application/protobuf";
-            HttpContext.Response.Headers["Proto-Type"] = respPacket.GetType().FullName.Replace("YotsubaBestGirl.Proto.", "");
 
-            HttpContext.Response.Headers["Connection"] = "keep-alive";
-            HttpContext.Response.Headers["Vary"] = "Accept-Encoding";
-            HttpContext.Response.Headers["X-Enish-App-Review"] = "false";
-
-            if (protocol == Protocol.resource_list_Android)
+            foreach (var header in respMessage.Headers)
             {
-                HttpContext.Response.Headers["X-Enish-App-Resource-Cnt"] = "54055";
+                HttpContext.Response.Headers[header.Key] = header.Value;
             }
 
-            else
-            {
-                HttpContext.Response.Headers["X-Enish-App-Version-Check"] = "1";
-                HttpContext.Response.Headers["X-Enish-App-Version-Master"] = Config.MasterVersion.ToString();
-                HttpContext.Response.Headers["X-Enish-App-Version-Resource"] = Config.ResourceVersion.ToString();
-            }
-
-            
-            HttpContext.Response.Headers["X-Enish-Date"] = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
-            HttpContext.Response.Headers["Strict-Transport-Security"] = "max-age=15724800; includeSubDomains";
-
-            if (respBytes.Length > 1000 || doGzip)
+            if (respMessage.DoGzip)
             {
                 HttpContext.Response.Headers["Content-Encoding"] = "gzip";
                 using var gzip = new GZipStream(HttpContext.Response.Body, CompressionLevel.Fastest, leaveOpen: true);

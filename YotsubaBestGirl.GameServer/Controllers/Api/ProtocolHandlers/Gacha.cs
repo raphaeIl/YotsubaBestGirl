@@ -14,7 +14,7 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
         {
             var resp = new Proto.Proto.GachaResult()
             {
-                StoredData = Account.GetUserData(),
+                StoredData = Login.GetUserData(),
             };
 
             var testCard = new Proto.Proto.Goods()

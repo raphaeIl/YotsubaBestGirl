@@ -1,6 +1,8 @@
 ﻿using Google.Protobuf;
 using Serilog;
+using System.Net.Sockets;
 using System.Reflection;
+using System.Reflection.Metadata;
 using YotsubaBestGirl.Core;
 using YotsubaBestGirl.Proto.Proto;
 
@@ -19,7 +21,7 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
 
     public interface IProtocolHandlerFactory
     {
-        public IMessage? Invoke(Protocol protocol, IQueryCollection? reqParams);
+        public HttpMessage? Invoke(Protocol protocol, IQueryCollection? reqParams);
         public MethodInfo? GetProtocolHandler(Protocol protocol);
         public void RegisterInstance(Type t, object? inst);
     }
@@ -51,14 +53,28 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
             }
         }
 
-        public IMessage? Invoke(Protocol msgId, IQueryCollection? reqParams)
+        public HttpMessage? Invoke(Protocol msgId, IQueryCollection? reqParams)
         {
             var handler = GetProtocolHandler(msgId);
             if (handler is null)
                 return null;
 
             handlerInstances.TryGetValue(handler.DeclaringType!, out var inst);
-            return (IMessage?)handler.Invoke(inst, [reqParams]);
+
+            // additional feature: handlers can either return a pure IMessage, or HttpMessage
+            // pure IMessage: use default HttpMessage.Create, HttpMessage: just use it
+
+            // return val is IMessage, meaning use default headers, with no gzip
+            if (handler.ReturnType != typeof(HttpMessage))
+            {
+                IMessage packet = (IMessage?)handler.Invoke(inst, [reqParams]);
+
+                return HttpMessage.Create(packet);
+
+            }
+
+            // else, this means that inside the handler, we made a custom HttpMessage with custom headers, gzip, so just use that (this is currently quite rare with only like 3 packets needing this)
+            return (HttpMessage?)handler.Invoke(inst, [reqParams]); ;
         }
 
         public MethodInfo? GetProtocolHandler(Protocol msgId)

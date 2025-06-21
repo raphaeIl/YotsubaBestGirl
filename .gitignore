@@ -376,4 +376,4 @@ vcpkg_installed*/
 ############################################################
 
 # custom ignore packets
-YotsubaBestGirl/Resources/Packets/
+YotsubaBestGirl.Common/Resources/Packets/

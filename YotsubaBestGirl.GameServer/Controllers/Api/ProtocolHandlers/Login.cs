@@ -7,23 +7,23 @@ using YotsubaBestGirl.Proto.Pcommon;
 using YotsubaBestGirl.Proto.Pmisc;
 using YotsubaBestGirl.Proto.Proto;
 using YotsubaBestGirl.Proto.Puser;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
 {
-    public class Account : ProtocolHandlerBase
+    // handlers in here is responsible for packets sent during login till lobby, or just testing ones lol
+    public class Login : ProtocolHandlerBase
     {
         private readonly ResourceService resourceService;
 
-        public Account(IProtocolHandlerFactory protocolHandlerFactory, ResourceService _resourceService) : base(protocolHandlerFactory)
+        public Login(IProtocolHandlerFactory protocolHandlerFactory, ResourceService _resourceService) : base(protocolHandlerFactory)
         {
             resourceService = _resourceService;
         }
 
         [ProtocolHandler(Protocol.account_authorize)]
-        public AccountAuthorize AccountAuthorizeHandler(IQueryCollection? reqParams)
+        public HttpMessage AccountAuthorizeHandler(IQueryCollection? reqParams)
         {
-            return new AccountAuthorize()
+            var resp = new AccountAuthorize()
             {
                 Session = "seggs",
                 OpeningShows =
@@ -40,6 +40,8 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
                 },
                 TermRevision = 2,
             };
+
+            return HttpMessage.Create(resp);
         }
 
         [ProtocolHandler(Protocol.account_certificate)]
@@ -61,26 +63,35 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
         }
 
         [ProtocolHandler(Protocol.resource_list_Android)]
-        public Resources ResourceListAndroidHandler(IQueryCollection? reqParams)
+        public HttpMessage ResourceListAndroidHandler(IQueryCollection? reqParams)
         {
-            return resourceService.GetResource<Resources>(Protocol.resource_list_Android);
+            var resp = resourceService.GetResource<Resources>(Protocol.resource_list_Android);
+
+            var extraHeaders = new Dictionary<string, string>();
+
+            extraHeaders["X-Enish-App-Resource-Cnt"] = "54055";
+
+            return HttpMessage.Create(resp, doGzip: true, extraHeaders);
         }
 
         [ProtocolHandler(Protocol.master_all)]
-        public Proto.Pmaster.All MasterAllHandler(IQueryCollection? reqParams)
+        public HttpMessage MasterAllHandler(IQueryCollection? reqParams)
         {
-            return resourceService.GetResource<Proto.Pmaster.All>(Protocol.master_all);
+            var resp = resourceService.GetResource<Proto.Pmaster.All>(Protocol.master_all);
+
+            return HttpMessage.Create(resp, true);
         }
 
         [ProtocolHandler(Protocol.user_load)]
-        public Proto.Proto.Nocontent UserLoadHandler(IQueryCollection? reqParams)
+        public HttpMessage UserLoadHandler(IQueryCollection? reqParams)
         {
             var resp = new Proto.Proto.Nocontent()
             {
-                StoredData = Account.GetUserData()
+                StoredData = Login.GetUserData()
             };
 
-            return resp;
+
+            return HttpMessage.Create(resp, true);
         }
 
         [ProtocolHandler(Protocol.fcm_token)]
