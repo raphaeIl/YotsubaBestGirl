@@ -8,16 +8,15 @@
 
   <ItemGroup>
 	<PackageReference Include="DotNetZip" Version="1.16.0" />
-	<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
-	  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	  <PrivateAssets>all</PrivateAssets>
-	</PackageReference>
+	<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.6" />
 	<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
 	<PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\YotsubaBestGirl.Common\YotsubaBestGirl.Common.csproj" />
+    <ProjectReference Include="..\YotsubaBestGirl.Database\YotsubaBestGirl.Database.csproj" />
     <ProjectReference Include="..\YotsubaBestGirl.PcapParser\YotsubaBestGirl.PcapParser.csproj" />
   </ItemGroup>
 </Project>

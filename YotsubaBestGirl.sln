@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YotsubaBestGirl.Common", "Y
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YotsubaBestGirl.PcapParser", "YotsubaBestGirl.PcapParser\YotsubaBestGirl.PcapParser.csproj", "{34FA0E24-5D64-4DA0-860E-59E4F54AF725}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YotsubaBestGirl.Database", "YotsubaBestGirl.Database\YotsubaBestGirl.Database.csproj", "{2DCAA1AB-911D-4207-BEF9-184990F6AFA3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{34FA0E24-5D64-4DA0-860E-59E4F54AF725}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34FA0E24-5D64-4DA0-860E-59E4F54AF725}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34FA0E24-5D64-4DA0-860E-59E4F54AF725}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DCAA1AB-911D-4207-BEF9-184990F6AFA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DCAA1AB-911D-4207-BEF9-184990F6AFA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DCAA1AB-911D-4207-BEF9-184990F6AFA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DCAA1AB-911D-4207-BEF9-184990F6AFA3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Serilog;
 using YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers;
 using YotsubaBestGirl.GameServer.Services;
+using Microsoft.EntityFrameworkCore;
+using YotsubaBestGirl.Database;
 
 namespace YotsubaBestGirl.GameServer
 {
@@ -25,6 +27,20 @@ namespace YotsubaBestGirl.GameServer
                 builder.Services.AddProtocolHandlerFactory();
                 builder.Services.AddControllers().AddApplicationPart(Assembly.GetAssembly(typeof(GameServer)));
                 builder.Services.AddResourceService();
+                builder.Services.AddSessionService();
+
+                // postgresql db
+                builder.Services.AddDbContext<YotsubaContext>(options =>
+                {
+                    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+                });
+
+                // sqlite db, add support later
+                //builder.Services.AddDbContext<YotsubaContext>(options =>
+                //{
+                //    options.UseSqlite(builder.Configuration.GetConnectionString("SqliteConnection"));
+                //});
+
 
                 // Add all Handler Groups
                 var handlerGroups = Assembly.GetAssembly(typeof(ProtocolHandlerFactory))
@@ -42,6 +58,13 @@ namespace YotsubaBestGirl.GameServer
                 app.UseSerilogRequestLogging();
 
                 app.MapControllers();
+
+                using (var scope = app.Services.CreateScope())
+                {
+                    var db = scope.ServiceProvider.GetRequiredService<YotsubaContext>();
+                    db.Database.EnsureCreated(); // create dbs
+                }
+
                 app.Run();
             }
             catch (Exception ex)

@@ -1,20 +1,31 @@
-﻿using YotsubaBestGirl.Core;
+﻿using Microsoft.EntityFrameworkCore;
+using YotsubaBestGirl.Common.Core;
+using YotsubaBestGirl.Core;
+using YotsubaBestGirl.Database;
+using YotsubaBestGirl.GameServer.Services;
 
 namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
 {
-    public class Gacha : ProtocolHandlerBase
+    public class GachaHandler : ProtocolHandlerBase
     {
-        public Gacha(IProtocolHandlerFactory protocolHandlerFactory) : base(protocolHandlerFactory)
-        {
+        private readonly ISessionService sessionService;
 
+        private YotsubaContext context;
+
+        public GachaHandler(IProtocolHandlerFactory protocolHandlerFactory, ISessionService _sessionService, YotsubaContext dbContext) : base(protocolHandlerFactory)
+        {
+            sessionService = _sessionService;
+            context = dbContext;
         }
 
         [ProtocolHandler(Protocol.gacha_purchase)]
-        public Proto.Proto.GachaResult GachaPurchaseHandler(IQueryCollection? reqParams)
+        public Proto.Proto.GachaResult GachaPurchaseHandler(RequestPacket req)
         {
+            int userId = sessionService.GetPlayerIdBySession(req.GetSessionId());
+
             var resp = new Proto.Proto.GachaResult()
             {
-                StoredData = Login.GetUserData(),
+                StoredData = UserHandler.GetUserData(context, userId),
             };
 
             var testCard = new Proto.Proto.Goods()

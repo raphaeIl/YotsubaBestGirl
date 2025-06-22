@@ -5,6 +5,7 @@ using System.IO.Compression;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using YotsubaBestGirl.Common.Core;
 using YotsubaBestGirl.Common.Utils;
 using YotsubaBestGirl.Core;
 using YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers;
@@ -51,10 +52,11 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api
 
             //IMessage reqPacket = (IMessage)JsonSerializer.Deserialize(reqBody, packetClassType);
 
-            // resp
-            var query = HttpContext.Request.Query;
+            // req
+            RequestPacket reqPacket = RequestPacket.Create(HttpContext.Request);
 
-            HttpMessage respMessage = protocolHandlerFactory.Invoke(protocol, query);
+            // resp
+            HttpMessage respMessage = protocolHandlerFactory.Invoke(protocol, reqPacket);
 
             if (respMessage is null)
             {

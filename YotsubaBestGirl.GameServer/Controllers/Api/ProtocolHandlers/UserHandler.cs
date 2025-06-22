@@ -1,7 +1,9 @@
-﻿using Google.Protobuf;
-using Serilog;
+﻿using Serilog;
+using YotsubaBestGirl.Common.Core;
 using YotsubaBestGirl.Common.Utils;
 using YotsubaBestGirl.Core;
+using YotsubaBestGirl.Database;
+using YotsubaBestGirl.Database.Entities;
 using YotsubaBestGirl.GameServer.Services;
 using YotsubaBestGirl.Proto.Pcommon;
 using YotsubaBestGirl.Proto.Pmisc;
@@ -10,22 +12,52 @@ using YotsubaBestGirl.Proto.Puser;
 
 namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
 {
-    // handlers in here is responsible for packets sent during login till lobby, or just testing ones lol
-    public class Login : ProtocolHandlerBase
+    public class UserHandler : ProtocolHandlerBase
     {
-        private readonly ResourceService resourceService;
+        private readonly ISessionService sessionService;
 
-        public Login(IProtocolHandlerFactory protocolHandlerFactory, ResourceService _resourceService) : base(protocolHandlerFactory)
+        private YotsubaContext context; // prob a bad idea to have this here
+
+        public UserHandler(IProtocolHandlerFactory protocolHandlerFactory, ISessionService _sessionService, YotsubaContext dbContext) : base(protocolHandlerFactory)
         {
-            resourceService = _resourceService;
+            sessionService = _sessionService;
+            context = dbContext;
         }
 
         [ProtocolHandler(Protocol.account_authorize)]
-        public HttpMessage AccountAuthorizeHandler(IQueryCollection? reqParams)
+        public AccountAuthorize AccountAuthorizeHandler(RequestPacket req)
         {
+            Log.Information($"account_authorize called with params: ");
+            //Util.PrintDictionary(req);
+
+            string uuid = req.Form["uuid"];
+
+            // create session with new key every login! (already better security than official servers! fr tho not even joking)
+            string sessionKey = sessionService.CreateSession(uuid);
+
+            Log.Information("Created session for uuid[{uuid}] with sessionKey: {sessionKey}", uuid, sessionKey);
+            int playerId = sessionService.GetPlayerIdBySession(sessionKey);
+
+            if (playerId == -1)
+            {
+                Log.Error("Unable to get playerId for uuid: {uuid}.", uuid);
+                throw new InvalidDataException("Unable to get playerId for uuid: " + uuid);
+            }
+
+            // create default stuff like user, stuff in user like cards
+            if (!sessionService.TryGetUser(sessionKey, out UserDB user))
+            {
+                user = sessionService.CreateUser(sessionKey);
+
+                CardDB defaultCard = new CardDB();
+
+                user.Cards.Add(defaultCard);
+                context.SaveChanges();
+            }
+
             var resp = new AccountAuthorize()
             {
-                Session = "seggs",
+                Session = sessionKey,
                 OpeningShows =
                 {
                     new Proto.Pmaster.OpeningShow()
@@ -41,12 +73,15 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
                 TermRevision = 2,
             };
 
-            return HttpMessage.Create(resp);
+            return resp;
         }
 
         [ProtocolHandler(Protocol.account_certificate)]
-        public AccountCertificate AccountCertificateHandler(IQueryCollection? reqParams)
+        public AccountCertificate AccountCertificateHandler(RequestPacket req)
         {
+            //Log.Information($"account_certificate called with params: ");
+            //Util.PrintDictionary(reqParams.);
+
             return new AccountCertificate()
             {
 
@@ -62,106 +97,26 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
             };
         }
 
-        [ProtocolHandler(Protocol.resource_list_Android)]
-        public HttpMessage ResourceListAndroidHandler(IQueryCollection? reqParams)
-        {
-            var resp = resourceService.GetResource<Resources>(Protocol.resource_list_Android);
-
-            var extraHeaders = new Dictionary<string, string>();
-
-            extraHeaders["X-Enish-App-Resource-Cnt"] = "54055";
-
-            return HttpMessage.Create(resp, doGzip: true, extraHeaders);
-        }
-
-        [ProtocolHandler(Protocol.master_all)]
-        public HttpMessage MasterAllHandler(IQueryCollection? reqParams)
-        {
-            var resp = resourceService.GetResource<Proto.Pmaster.All>(Protocol.master_all);
-
-            return HttpMessage.Create(resp, true);
-        }
-
         [ProtocolHandler(Protocol.user_load)]
-        public HttpMessage UserLoadHandler(IQueryCollection? reqParams)
+        public HttpMessage UserLoadHandler(RequestPacket req)
         {
+            int userId = sessionService.GetPlayerIdBySession(req.GetSessionId());
+
             var resp = new Proto.Proto.Nocontent()
             {
-                StoredData = Login.GetUserData()
+                StoredData = UserHandler.GetUserData(context, userId)
             };
-
 
             return HttpMessage.Create(resp, true);
-        }
-
-        [ProtocolHandler(Protocol.fcm_token)]
-        public Proto.Proto.Nocontent FcmTokenHandler(IQueryCollection? reqParams)
-        {
-            return new Proto.Proto.Nocontent()
-            {
-                StoredData = new StoredData()
-                {
-                    Clear =
-                    {
-                          "unlock_story_ids",
-                          "feature_team_create",
-                          "member_likabilitypoint",
-                          "news_unread_count",
-                          "friend_approval_count",
-                          "login_bonus_flag",
-                          "feature_team_member",
-                          "last_bonds_season_ranking",
-                          "bonds_season_ranking",
-                          "news_latest_id",
-                          "chat_unread_categories"
-                    },
-                    NewsLatestId = 3286,
-                    NewsUnreadCount = 6,
-                    BondsSeasonRanking = new BondsSeasonRanking()
-                    {
-                        SeasonId = 56,
-                        Score = 2001
-                    },
-                    LastBondsSeasonRanking = new BondsSeasonRanking()
-                    {
-                        SeasonId = 55,
-                    },
-                }
-            };
-        }
-
-        [ProtocolHandler(Protocol.shop_products)]
-        public Proto.Proto.IAPProductList ShopProductsHandler(IQueryCollection? reqParams) // one case of reqParams being used, there are two it can be all=1 or all=1, resp prob different depending on that
-        {
-            // this is not the full list at all, the full shit is like 16k lines no way im coding that, so shop prob broken for now
-            var resp = new IAPProductList()
-            {
-                List =
-                {
-                    new IAPProduct()
-                    {
-                        Id = 2,
-                        ProductId = "leo30000",
-                        Name = "aaa",
-                        ConsumeType = "consumable",
-                        SellingType = "normal",
-                        Price = 120,
-                        Coin = 100,
-                        Enabled = true,
-                        StartTime = 0,
-                        EndTime = 0,
-                        PurchaseCount = 0,
-                        PurchaseCountMax = 0
-                    }
-                }
-            };
-
-            return resp;
         }
 
         // hardcoded for now, db later
-        public static StoredData GetUserData()
+        public static StoredData GetUserData(YotsubaContext context, int userId)
         {
+            UserDB user = context.Users.Where(u => u.Uid == userId).FirstOrDefault();
+            
+            var cards = user.Cards.Select(card => card.ToProto());
+            
             // no db yet, so everything hardcoded ugly
             var data = new StoredData
             {
@@ -277,42 +232,7 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
                     "gacha_bonus_choice",
                     "bonds_season"
                 },
-                User = new User
-                {
-                    Uid = 50443193,
-                    Muid = "IiaqKNMkWhlC",
-                    WalletId = "MDxSD96XfmGZm",
-                    Status = "open",
-                    SessionId = "seggs",
-                    Lastname = "上杉",
-                    Firstname = "風太郎",
-                    LastnameKana = "ウエスギ",
-                    FirstnameKana = "フータロー",
-                    Nickname = "Raphael",
-                    Comment = "よろしくお願いします",
-                    Birthday = 102,
-                    BirthdayLastDate = 1749495563,
-                    HomeBackgroundId = 10028,
-                    Tutorial = 140,
-                    ActiveUnit = 1,
-                    PlayerTitleId = 505001,
-                    Leaf = int.MaxValue, // some currency? gacha?
-                    Exp = 2001,
-                    Level = 9,
-                    Ap = 28,
-                    LastApDate = 1749497296,
-                    SpecialAp = 3,
-                    LastSpecialApDate = 1749495563,
-                    ContinueLoginNum = 2,
-                    LoginNum = 2,
-                    TotalLoginNum = 6,
-                    LastLoginDate = 1749514629,
-                    LastChallengeLoginDate = 1749409163,
-                    ChallengeUpdateStep = 6,
-                    LastSeasonId = 55,
-                    OpenedAt = 1749497296,
-                    CreatedAt = 1749495563,
-                },
+                User = user.ToProto(),
                 Currency = new Currency
                 {
                     FreeCoin = int.MaxValue,
@@ -437,22 +357,6 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
                         Rank = 5,
                         UnitIdx = 1,
                         UpdatedAt = 1749572833,
-                    },
-                },
-                Card =
-                {
-                    new Card
-                    {
-                        Id = 1924314499,
-                        Uid = 50443193,
-                        CardId = 10001,
-                        CardUniqueId = "1d30a269-1bd5-4f26-bed9-0892448c4171",
-                        CardPropertyId = 100011,
-                        Level = 1,
-                        PassiveSkillLevel1 = 1,
-                        AwakePriority = 1,
-                        Protect = 1,
-                        ResourceIdx = 1,
                     },
                 },
                 Item =
@@ -1065,6 +969,8 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
 
                 }
             };
+
+            data.Card.AddRange(cards);
 
             return data;
         }
