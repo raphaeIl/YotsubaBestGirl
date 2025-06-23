@@ -14,7 +14,7 @@ namespace YotsubaBestGirl.Database.Entities
         [Required]
         [Column("uuid")]
         public string? Uuid { get; set; }
-
+        
         // username? password? didnt pcap account login yet idk
     }
 }

@@ -60,10 +60,11 @@ namespace YotsubaBestGirl.GameServer.Services
 
         public bool TryGetUser(string sessionKey, out UserDB user)
         {
-            user = null;
-
             if (!_sessions.TryGetValue(sessionKey, out var playerId))
+            {
+                user = null;
                 return false;
+            }
 
             user = dbContext.Users.FirstOrDefault(u => u.Uid == playerId);
             return user != null;

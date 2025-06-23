@@ -27,9 +27,6 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
         [ProtocolHandler(Protocol.account_authorize)]
         public AccountAuthorize AccountAuthorizeHandler(RequestPacket req)
         {
-            Log.Information($"account_authorize called with params: ");
-            //Util.PrintDictionary(req);
-
             string uuid = req.Form["uuid"];
 
             // create session with new key every login! (already better security than official servers! fr tho not even joking)
@@ -43,15 +40,12 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
                 Log.Error("Unable to get playerId for uuid: {uuid}.", uuid);
                 throw new InvalidDataException("Unable to get playerId for uuid: " + uuid);
             }
-
-            // create default stuff like user, stuff in user like cards
+            
             if (!sessionService.TryGetUser(sessionKey, out UserDB user))
             {
+                // this means new account 
                 user = sessionService.CreateUser(sessionKey);
 
-                CardDB defaultCard = new CardDB();
-
-                user.Cards.Add(defaultCard);
                 context.SaveChanges();
             }
 
@@ -88,7 +82,7 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
                 Version = new Proto.Pmaster.Version()
                 {
                     Platform = "android",
-                    Application = "1.43.440",
+                    Application = Config.GameVersionNumber,
                     Resource = Config.ResourceVersion,
                     Master = Config.MasterVersion,
                     Term = 2,
@@ -114,8 +108,8 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
         public static StoredData GetUserData(YotsubaContext context, int userId)
         {
             UserDB user = context.Users.Where(u => u.Uid == userId).FirstOrDefault();
-            
-            var cards = user.Cards.Select(card => card.ToProto());
+
+            IEnumerable<Card> cards = user.Cards.Select(card => card.ToProto());
             
             // no db yet, so everything hardcoded ugly
             var data = new StoredData
@@ -233,11 +227,7 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
                     "bonds_season"
                 },
                 User = user.ToProto(),
-                Currency = new Currency
-                {
-                    FreeCoin = int.MaxValue,
-                    TotalCoin = int.MaxValue,
-                },
+                Currency = user.Currency.ToProto(),
                 Puzzle = new Puzzle
                 {
                     Uid = 50443193,

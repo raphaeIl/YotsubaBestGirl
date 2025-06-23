@@ -12,7 +12,7 @@ namespace YotsubaBestGirl.Common.Core
         // this is so bad, they have 3 different way of sending data in a request
         // 1. normal http headers, 
         // 2. query params, example: shop/products?all=1    the all=1 is a query param
-        // 3. url encoded form data, example: in account/authorize's body, the uuid: xxxxx is the req body
+        // 3. url encoded form data, example: in account/authorize's body, the uuid: xxxxx is the req body (in url encoded format)
 
         public IDictionary<string, string> Headers { get; set; } = new Dictionary<string, string>();
         public IDictionary<string, string> Query { get; set; } = new Dictionary<string, string>();

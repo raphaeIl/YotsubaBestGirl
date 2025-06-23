@@ -14,7 +14,7 @@ namespace YotsubaBestGirl.Database
 
         public YotsubaContext(DbContextOptions<YotsubaContext> options) : base(options)
         {
-
+            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -29,6 +29,17 @@ namespace YotsubaBestGirl.Database
                 .WithMany(u => u.Cards)
                 .HasForeignKey(c => c.Uid)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<UserDB>(entity =>
+            {
+                entity.OwnsOne(p => p.Currency, currency =>
+                {
+                    currency.Property(a => a.PayCoin).HasColumnName("PayCoin");
+                    currency.Property(a => a.FreeCoin).HasColumnName("FreeCoin");
+                });
+            });
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

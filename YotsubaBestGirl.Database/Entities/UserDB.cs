@@ -16,6 +16,9 @@ namespace YotsubaBestGirl.Database.Entities
         [JsonIgnore]
         public ICollection<CardDB> Cards { get; set; }
 
+        [JsonIgnore]
+        public CurrencyDB Currency { get; set; }
+
         [Key]
         public int Uid { get; set; } // do not ever manually set this
         
@@ -100,6 +103,21 @@ namespace YotsubaBestGirl.Database.Entities
             LastSeasonId = 55;
             OpenedAt = 1749497296;
             CreatedAt = 1749495563;
+
+            // create default stuff like cards, currency, etc.
+            AddDefaultItems();
+        }
+
+        public void AddDefaultItems()
+        {
+            CardDB defaultCard = new CardDB(10001, 100011);
+            Cards.Add(defaultCard);
+
+            Currency = new CurrencyDB()
+            {
+                PayCoin = int.MaxValue,
+                FreeCoin = 0
+            };
         }
 
         public User ToProto() // hehe double serialization ez clap

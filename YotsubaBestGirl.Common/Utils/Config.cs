@@ -14,6 +14,7 @@ namespace YotsubaBestGirl.Common.Utils
         public static string PcapDir = Path.Join(ResourceDir, "Packets");
 
         public static string GameVersion = "v1_43_440";
+        public static string GameVersionNumber = "1.43.440";
 
         // these two are sent in account/certificate and in ALL response
         public static int ResourceVersion = 1906;

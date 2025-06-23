@@ -12,21 +12,8 @@ namespace YotsubaBestGirl.Database.Entities
 {
     // all models: Uid is the unique playerId, Id is the global unique id for this item, CardId, is the card's id, identical across db
     [Table("cards")]
-    public class CardDB
+    public class CardDB : UserOwnedEntity
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long Id { get; set; }
-
-        [Required]
-        public int Uid { get; set; }
-
-        [JsonIgnore]
-        [ForeignKey("Uid")]
-        public UserDB User { get; set; }
-
-        // above 3 are all required for all entities for the database to function
-
         [Required]
         public int CardId { get; set; }
 
@@ -62,11 +49,11 @@ namespace YotsubaBestGirl.Database.Entities
         public int Bgm { get; set; }
         public int ResourceIdx { get; set; }
 
-        public CardDB()
+        public CardDB(int cardId, int cardPropertyId) // default values
         {
-            CardId = 10001;
-            CardUniqueId = "1d30a269-1bd5-4f26-bed9-0892448c4171";
-            CardPropertyId = 100011;
+            CardId = cardId;
+            CardUniqueId = Guid.NewGuid().ToString();
+            CardPropertyId = cardPropertyId;
             Level = 1;
             PassiveSkillLevel1 = 1;
             AwakePriority = 1;
