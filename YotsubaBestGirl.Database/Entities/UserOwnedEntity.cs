@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
+using YotsubaBestGirl.Common.Utils;
 
 namespace YotsubaBestGirl.Database.Entities
 {

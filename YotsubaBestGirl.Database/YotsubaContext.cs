@@ -24,11 +24,11 @@ namespace YotsubaBestGirl.Database
                 .IsUnique();
 
             // cascade behavior
-            modelBuilder.Entity<CardDB>()
-                .HasOne(c => c.User)
-                .WithMany(u => u.Cards)
-                .HasForeignKey(c => c.Uid)
-                .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<CardDB>()
+            //    .HasOne(c => c.User)
+            //    .WithMany(u => u.Cards)
+            //    .HasForeignKey(c => c.Uid)
+            //    .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<UserDB>(entity =>
             {

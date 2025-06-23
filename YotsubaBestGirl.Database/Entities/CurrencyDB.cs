@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using YotsubaBestGirl.Common.Utils;
 using YotsubaBestGirl.Proto.Puser;
 
 namespace YotsubaBestGirl.Database.Entities
 {
-    public class CurrencyDB
+    public class CurrencyDB : IProtoConvertible<Proto.Puser.Currency>
     {
         public int FreeCoin { get; set; }
 

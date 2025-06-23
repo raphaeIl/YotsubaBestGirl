@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YotsubaBestGirl.Database.Entities
 {
-    [Table("player_account")]
+    [Table("t_player_account")]
     public class PlayerAccountDB
     {
         [Key]

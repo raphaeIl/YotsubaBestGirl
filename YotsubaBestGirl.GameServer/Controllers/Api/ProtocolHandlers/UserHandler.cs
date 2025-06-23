@@ -5,7 +5,6 @@ using YotsubaBestGirl.Core;
 using YotsubaBestGirl.Database;
 using YotsubaBestGirl.Database.Entities;
 using YotsubaBestGirl.GameServer.Services;
-using YotsubaBestGirl.Proto.Pcommon;
 using YotsubaBestGirl.Proto.Pmisc;
 using YotsubaBestGirl.Proto.Proto;
 using YotsubaBestGirl.Proto.Puser;
@@ -78,7 +77,6 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
 
             return new AccountCertificate()
             {
-
                 Version = new Proto.Pmaster.Version()
                 {
                     Platform = "android",
@@ -109,123 +107,9 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
         {
             UserDB user = context.Users.Where(u => u.Uid == userId).FirstOrDefault();
 
-            IEnumerable<Card> cards = user.Cards.Select(card => card.ToProto());
-            
             // no db yet, so everything hardcoded ugly
             var data = new StoredData
             {
-                Clear =
-                {
-                    "unlock_story_ids",
-                    "options",
-                    "retryable_puzzle",
-                    "card_special_property",
-                    "bgm",
-                    "friend_approval_count",
-                    "unlock_dearlevels",
-                    "advertising",
-                    "card_story",
-                    "retryable_stage_group",
-                    "home_actor",
-                    "shop_exchange_lock",
-                    "home_background",
-                    "home_messgae",
-                    "feature_coupon",
-                    "story",
-                    "shop_challenge",
-                    "login_bonus_flag",
-                    "special_puzzle",
-                    "bonds_season_ranking",
-                    "app_icon",
-                    "challenge",
-                    "gacha_omake_history",
-                    "appointment_surprise",
-                    "review",
-                    "team_battle_selection_ids",
-                    "still_picture",
-                    "daily_unseen_lottery_result_ids",
-                    "retryable_quest",
-                    "feature_effects",
-                    "feature_item",
-                    "mileage",
-                    "team_battle_stage",
-                    "cooking_summary",
-                    "chapter_expire",
-                    "shop_dearpoint_stock",
-                    "unit_skill",
-                    "card_special",
-                    "team_battle_puzzle",
-                    "member",
-                    "present_count",
-                    "member_dearpoint",
-                    "season_oshimen_ids",
-                    "work",
-                    "chat_unread_categories",
-                    "news_unread_count",
-                    "stage_fail_lock",
-                    "feature_revival",
-                    "item",
-                    "collection_reward_flags",
-                    "currency",
-                    "team_battle_unread_lottery_result_ids",
-                    "player_title_summary",
-                    "vr_content",
-                    "card_special_property_slot",
-                    "stage_skip",
-                    "free_gacha_count",
-                    "photo_stamp",
-                    "member_likabilitylevel_flag",
-                    "card",
-                    "member_picture",
-                    "shop_fragment_lock",
-                    "encore_puzzle",
-                    "chapter",
-                    "challenge_done",
-                    "encore",
-                    "home_picture",
-                    "cooking_recipe",
-                    "shop_stock",
-                    "feature_selection_ids",
-                    "retryable_chapter",
-                    "member_likabilitypoint",
-                    "feature_treasure_hunting_stage",
-                    "group_photo",
-                    "book",
-                    "member_dearpoint_rank",
-                    "work_member_summary",
-                    "bonds_season_unlock",
-                    "gacha_history",
-                    "challenge_group",
-                    "photo_booth",
-                    "stage",
-                    "home_member_clothes",
-                    "friend_can_greeting_count",
-                    "last_bonds_season_ranking",
-                    "vip",
-                    "gacha_box",
-                    "cooking_tray",
-                    "news_latest_id",
-                    "unlock_likabilitylevels",
-                    "feature_unread_lottery_result_ids",
-                    "feature_team_member",
-                    "appointment",
-                    "member_dearlevel_flag",
-                    "unit",
-                    "work_lineup",
-                    "special_stage",
-                    "puzzle",
-                    "special_content",
-                    "func_tutorial_ids",
-                    "card_special_slot_status",
-                    "feature_team_create",
-                    "card_special_slot",
-                    "feature_appointment",
-                    "home_member_tap_motion",
-                    "user",
-                    "retryable_stage",
-                    "gacha_bonus_choice",
-                    "bonds_season"
-                },
                 User = user.ToProto(),
                 Currency = user.Currency.ToProto(),
                 Puzzle = new Puzzle
@@ -246,75 +130,9 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
                     UsedAp = 1,
                     StartedAt = 1749497296,
                 },
-                Options = new Options
-                {
-                    Uid = 50443193,
-                    Bgm = 50,
-                    Se = 50,
-                    Voice = 50,
-                    PushSystem = 1,
-                    PushAppointment = 1,
-                    PushAp = 1,
-                    PushWork = 1,
-                    PushChat = 1,
-                    PushCooking = 1,
-                    ProtectCardR6 = 1,
-                    ProtectCardR5 = 1,
-                    ProtectCardFirst = 1,
-                    Gyro = 1,
-                },
                 MemberDearlevelFlag = new MemberDearlevelFlag()
                 {
 
-                },
-                Member =
-                {
-                    new Member
-                    {
-                        Uid = 50443193,
-                        MemberId = 1,
-                        MemberPictureId = 1,
-                    },
-                    new Member
-                    {
-                        Uid = 50443193,
-                        MemberId = 5,
-                        MemberPictureId = 5,
-                    },
-                },
-                Unit =
-                {
-                    new Unit()
-                    {
-                        Uid = 50443924,
-                        Idx = 1,
-                        UnitName = "",
-                        MemberId1 = 1,
-                        MemberId2 = 2,
-                        MemberId3 = 3,
-                        MemberId4 = 4,
-                        MemberId5 = 5,
-                        CardId1 = 1924497643,
-                        CardId2 = 1924497636,
-                        CardId3 = 1924497639,
-                        CardId4 = 1924497574,
-                        CardId5 = 1924497635,
-                    }
-                },
-                Chapter =
-                {
-                    new Chapter
-                    {
-                        Uid = 50443193,
-                        ChapterId = 1011,
-                        Status = 1,
-                    },
-                    new Chapter
-                    {
-                        Uid = 50443193,
-                        ChapterId = 4001,
-                        Status = 1,
-                    },
                 },
                 Stage =
                 {
@@ -349,126 +167,6 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
                         UpdatedAt = 1749572833,
                     },
                 },
-                Item =
-                {
-                    new Item
-                    {
-                        Uid = 50443924,
-                        ItemId = 3008,
-                        Quantity = 1,
-                        Duration = 0,
-                        ExpireDate = 1749573375
-                    },
-                    new Item
-                    {
-                        Uid = 50443924,
-                        ItemId = 5003,
-                        Quantity = 1,
-                        Duration = 0,
-                        ExpireDate = 1749694376
-                    },
-                    new Item
-                    {
-                        Uid = 50443924,
-                        ItemId = 7001,
-                        Quantity = 5,
-                        Duration = 0,
-                        ExpireDate = 1749573053
-                    },
-                    new Item
-                    {
-                        Uid = 50443924,
-                        ItemId = 7004,
-                        Quantity = 1,
-                        Duration = 0,
-                        ExpireDate = 1749573053
-                    },
-                    new Item
-                    {
-                        Uid = 50443924,
-                        ItemId = 9210,
-                        Quantity = 10,
-                        Duration = 0,
-                        ExpireDate = 1749573300
-                    },
-                    new Item
-                    {
-                        Uid = 50443924,
-                        ItemId = 17123,
-                        Quantity = 55,
-                        Duration = 0,
-                        ExpireDate = 1749573053
-                    },
-                    new Item
-                    {
-                        Uid = 50443924,
-                        ItemId = 17143,
-                        Quantity = 55,
-                        Duration = 0,
-                        ExpireDate = 1750379894
-                    },
-                    new Item
-                    {
-                        Uid = 50443924,
-                        ItemId = 20823,
-                        Quantity = 9,
-                        Duration = 0,
-                        ExpireDate = 1749573053
-                    },
-                    new Item
-                    {
-                        Uid = 50443924,
-                        ItemId = 20824,
-                        Quantity = 3,
-                        Duration = 0,
-                        ExpireDate = 1750380763
-                    },
-                    new Item
-                    {
-                        Uid = 50443924,
-                        ItemId = 55016,
-                        Quantity = 1,
-                        Duration = 0,
-                        ExpireDate = 1749684691
-                    },
-                    new Item
-                    {
-                        Uid = 50443924,
-                        ItemId = 190202,
-                        Quantity = 1,
-                        Duration = 0,
-                        ExpireDate = 1749573375
-                    }
-                },
-                MemberPicture =
-                {
-                    new MemberPicture { Uid = 50443924, MemberPictureId = 10001, ReleasedEmotionResourceIds = "" },
-                    new MemberPicture { Uid = 50443924, MemberPictureId = 10002, ReleasedEmotionResourceIds = "" },
-                    new MemberPicture { Uid = 50443924, MemberPictureId = 10003, ReleasedEmotionResourceIds = "" },
-                    new MemberPicture { Uid = 50443924, MemberPictureId = 10004, ReleasedEmotionResourceIds = "" },
-                    new MemberPicture { Uid = 50443924, MemberPictureId = 10005, ReleasedEmotionResourceIds = "" },
-                    new MemberPicture { Uid = 50443924, MemberPictureId = 10015, ReleasedEmotionResourceIds = "" },
-                    new MemberPicture { Uid = 50443924, MemberPictureId = 10017, ReleasedEmotionResourceIds = "" },
-                    new MemberPicture { Uid = 50443924, MemberPictureId = 10023, ReleasedEmotionResourceIds = "" },
-                    new MemberPicture { Uid = 50443924, MemberPictureId = 10028, ReleasedEmotionResourceIds = "" },
-                    new MemberPicture { Uid = 50443924, MemberPictureId = 10029, ReleasedEmotionResourceIds = "" },
-                    new MemberPicture { Uid = 50443924, MemberPictureId = 10034, ReleasedEmotionResourceIds = "" },
-                    new MemberPicture { Uid = 50443924, MemberPictureId = 10035, ReleasedEmotionResourceIds = "" },
-                    new MemberPicture { Uid = 50443924, MemberPictureId = 10036, ReleasedEmotionResourceIds = "" },
-                    new MemberPicture { Uid = 50443924, MemberPictureId = 10046, ReleasedEmotionResourceIds = "" },
-                    new MemberPicture { Uid = 50443924, MemberPictureId = 10067, ReleasedEmotionResourceIds = "" },
-                    new MemberPicture { Uid = 50443924, MemberPictureId = 10071, ReleasedEmotionResourceIds = "" },
-                    new MemberPicture { Uid = 50443924, MemberPictureId = 10072, ReleasedEmotionResourceIds = "" },
-                    new MemberPicture { Uid = 50443924, MemberPictureId = 10073, ReleasedEmotionResourceIds = "" },
-                    new MemberPicture { Uid = 50443924, MemberPictureId = 10074, ReleasedEmotionResourceIds = "" },
-                    new MemberPicture { Uid = 50443924, MemberPictureId = 10075, ReleasedEmotionResourceIds = "" },
-                    new MemberPicture { Uid = 50443924, MemberPictureId = 10128, ReleasedEmotionResourceIds = "" },
-                    new MemberPicture { Uid = 50443924, MemberPictureId = 1, ReleasedEmotionResourceIds = "" },
-                    new MemberPicture { Uid = 50443924, MemberPictureId = 2, ReleasedEmotionResourceIds = "" },
-                    new MemberPicture { Uid = 50443924, MemberPictureId = 3, ReleasedEmotionResourceIds = "" },
-                    new MemberPicture { Uid = 50443924, MemberPictureId = 4, ReleasedEmotionResourceIds = "" },
-                    new MemberPicture { Uid = 50443924, MemberPictureId = 5, ReleasedEmotionResourceIds = "" }
-                },
                 HomeBackground =
                 {
                     new HomeBackground
@@ -476,54 +174,6 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
                         Uid = 50443924,
                         HomeBackgroundId = 10028,
                     },
-                },
-                Book =
-                {
-                    new Book
-                    {
-                        Id = 420358966,
-                        Uid = 50443193,
-                        CardId = 10001,
-                        Level = 1,
-                        PassiveSkillLevel1 = 1,
-                        AllCardId = 1924314499,
-                        MemberCardId = 1924314499,
-                        CostumeCardId = 1924314499,
-                        GroupCardId = "1:1924314499",
-                    }
-                },
-                Story =
-                {
-                    new Story()
-                    {
-                        Uid = 50443924,
-                        StoryId = 70010101,
-                        Status = 2,
-                    }
-                },
-                GachaHistory =
-                {
-                    new GachaHistory
-                    {
-                        Uid = 50443924,
-                        GachaId = 8001,
-                        Step = 0,
-                        CurrentBoxId = 0,
-                        RankupBoxId = 0,
-                        SingleCnt = 0,
-                        TicketCnt = 0,
-                        LumpCnt = 1,
-                        TotalCnt = 1,
-                        LimitCnt = 1,
-                        GroupWeightCnt = 0,
-                        IsPaid = 0,
-                        PaidDate = 1749572351,
-                        LastGachaDate = 1749572351,
-                        PaidSingleResetCount = 0,
-                        PaidSingleResetDate = 1749572351,
-                        PaidLumpResetCount = 0,
-                        PaidLumpResetDate = 1749572351
-                    }
                 },
                 Challenge =
                 {
@@ -960,7 +610,18 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
                 }
             };
 
-            data.Card.AddRange(cards);
+            data.Clear.AddRange(user.Clear);
+            data.Options = user.Options.FirstOrDefault().ToProto(); // there should not be more than one of this, should prob add check
+
+            data.Member.AddRange(user.Members.ToProtoList());
+            data.Unit.AddRange(user.Units.ToProtoList());
+            data.Chapter.AddRange(user.Chapters.ToProtoList());
+            data.Item.AddRange(user.Items.ToProtoList());
+            data.MemberPicture.AddRange(user.MemberPictures.ToProtoList());
+            data.Story.AddRange(user.Stories.ToProtoList());
+            data.GachaHistory.AddRange(user.GachaHistory.ToProtoList());
+            data.Card.AddRange(user.Cards.ToProtoList());
+            data.Book.AddRange(user.Books.ToProtoList());
 
             return data;
         }

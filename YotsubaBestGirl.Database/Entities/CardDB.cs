@@ -6,13 +6,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using YotsubaBestGirl.Common.Utils;
 using YotsubaBestGirl.Proto.Pmaster;
 
 namespace YotsubaBestGirl.Database.Entities
 {
     // all models: Uid is the unique playerId, Id is the global unique id for this item, CardId, is the card's id, identical across db
-    [Table("cards")]
-    public class CardDB : UserOwnedEntity
+    [Table("t_user_card")]
+    public class CardDB : UserOwnedEntity, IProtoConvertible<Proto.Puser.Card>
     {
         [Required]
         public int CardId { get; set; }

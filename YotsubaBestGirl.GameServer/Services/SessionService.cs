@@ -91,9 +91,11 @@ namespace YotsubaBestGirl.GameServer.Services
                 Uid = playerId,
             };
 
-            Log.Information("Adding new user to db");
+            Log.Information("Created new user with uid {uid}", user.Uid);
             dbContext.Users.Add(user);
             dbContext.SaveChanges();
+
+            Log.Information("Sucessfully added user to db");
             return user;
         }
     }
