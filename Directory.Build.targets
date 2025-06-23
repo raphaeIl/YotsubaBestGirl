@@ -1,0 +1,11 @@
+<Project>
+	<PropertyGroup>
+		<TargetRID Condition="'$(TargetRID)' == '' and '$(OS)' == 'Windows_NT'">win-x64</TargetRID>
+		<TargetRID Condition="'$(TargetRID)' == '' and '$(OS)' != 'Windows_NT'">linux-x64</TargetRID>
+	</PropertyGroup>
+	
+	<Target Name="BuildForRID" AfterTargets="Build" Condition="'$(BuildingCrossPlatform)' != 'true'">
+		<Message Text="Building for $(TargetRID) in project $(MSBuildProjectName)..." Importance="High" />
+		<Exec Command="dotnet build &quot;$(MSBuildProjectFullPath)&quot; -c $(Configuration) -r $(TargetRID) /p:BuildingCrossPlatform=true" />
+	</Target>
+</Project>
