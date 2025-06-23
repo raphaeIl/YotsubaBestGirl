@@ -45,6 +45,27 @@ namespace YotsubaBestGirl.Database.Entities
         public ICollection<UnitDB> Units { get; set; }
 
         [JsonIgnore]
+        public ICollection<AdvertisingDB> Advertising { get; set; }
+
+        [JsonIgnore]
+        public ICollection<StageDB> Stages { get; set; }
+
+        [JsonIgnore]
+        public ICollection<PhotoStampDB> PhotoStamps { get; set; }
+
+        [JsonIgnore]
+        public ICollection<HomeMemberClothesDB> HomeMemberClothes { get; set; }
+
+        [JsonIgnore]
+        public ICollection<HomeMemberTapMotionDB> HomeMemberTapMotions { get; set; }
+
+        [JsonIgnore]
+        public ICollection<WorkLineupDB> WorkLineups { get; set; }
+
+        [JsonIgnore]
+        public ICollection<AppIconDB> AppIcons { get; set; }
+
+        [JsonIgnore]
         public CurrencyDB Currency { get; set; }
 
         [JsonIgnore]
@@ -110,6 +131,13 @@ namespace YotsubaBestGirl.Database.Entities
             Options = new List<OptionsDB>();
             Stories = new List<StoryDB>();
             Units = new List<UnitDB>();
+            Advertising = new List<AdvertisingDB>();
+            Stages = new List<StageDB>();
+            PhotoStamps = new List<PhotoStampDB>();
+            HomeMemberClothes = new List<HomeMemberClothesDB>();
+            HomeMemberTapMotions = new List<HomeMemberTapMotionDB>();
+            WorkLineups = new List<WorkLineupDB>();
+            AppIcons = new List<AppIconDB>();
 
             Muid = "IiaqKNMkWhlC";
             WalletId = "MDxSD96XfmGZm";
@@ -307,6 +335,27 @@ namespace YotsubaBestGirl.Database.Entities
             // default card
             CardDB defaultCard = new CardDB(10001, 100011);
             Cards.Add(defaultCard);
+
+            // default advertising
+            Advertising.Add(new AdvertisingDB(1));
+
+            // default stage
+            Stages.Add(new StageDB(40001));
+
+            // default photo stamp
+            PhotoStamps.Add(new PhotoStampDB(50001));
+
+            // default home member clothes
+            HomeMemberClothes.Add(new HomeMemberClothesDB(92));
+
+            // default home member tap motion
+            HomeMemberTapMotions.Add(new HomeMemberTapMotionDB(110));
+
+            // default work lineup
+            WorkLineups.Add(new WorkLineupDB(1010028));
+
+            // default app icons
+            AppIcons.Add(new AppIconDB(1));
 
             Currency = new CurrencyDB()
             {

@@ -11,7 +11,7 @@ using YotsubaBestGirl.Proto.Puser;
 namespace YotsubaBestGirl.Database.Entities
 {
     [Table("t_user_item")]
-    public class ItemDB : UserOwnedEntity, IProtoConvertible<Proto.Puser.Item>
+    public class ItemDB : UserOwnedEntity, IProtoConvertible<Item>
     {
         public int ItemId { get; set; }
         public int Quantity { get; set; }
@@ -28,13 +28,9 @@ namespace YotsubaBestGirl.Database.Entities
 
         public Item ToProto()
         {
-            return new Proto.Puser.Item()
-            {
-                ItemId = ItemId,
-                Quantity = Quantity,
-                Duration = Duration,
-                ExpireDate = ExpireDate
-            };
+            string jsonStr = JsonConvert.SerializeObject(this);
+
+            return JsonConvert.DeserializeObject<Item>(jsonStr);
         }
     }
 }

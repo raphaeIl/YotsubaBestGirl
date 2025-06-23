@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations.Schema;
 using YotsubaBestGirl.Common.Utils;
 
 namespace YotsubaBestGirl.Database.Entities
@@ -17,11 +18,9 @@ namespace YotsubaBestGirl.Database.Entities
 
         public Proto.Puser.Chapter ToProto()
         {
-            return new Proto.Puser.Chapter()
-            {
-                ChapterId = ChapterId,
-                Status = Status
-            };
+            string jsonStr = JsonConvert.SerializeObject(this);
+
+            return JsonConvert.DeserializeObject<Proto.Puser.Chapter>(jsonStr);
         }
     }
 }

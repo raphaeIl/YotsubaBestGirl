@@ -29,14 +29,9 @@ namespace YotsubaBestGirl.Database.Entities
 
         public Proto.Puser.Story ToProto()
         {
-            return new Proto.Puser.Story()
-            {
-                StoryId = StoryId,
-                Status = Status,
-                Choice1 = Choice1,
-                Choice2 = Choice2,
-                Choice3 = Choice3
-            };
+            string jsonStr = JsonConvert.SerializeObject(this);
+
+            return JsonConvert.DeserializeObject<Proto.Puser.Story>(jsonStr);
         }
     }
 }

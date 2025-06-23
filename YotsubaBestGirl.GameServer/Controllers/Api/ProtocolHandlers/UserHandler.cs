@@ -134,39 +134,6 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
                 {
 
                 },
-                Stage =
-                {
-                    new Stage
-                    {
-                        Uid = 50443924,
-                        StageId = 40001,
-                        Status = 2,
-                        Score = 5040,
-                        Rank = 5,
-                        UnitIdx = 1,
-                        UpdatedAt = 1749572641,
-                    },
-                    new Stage
-                    {
-                        Uid = 50443924,
-                        StageId = 101102,
-                        Status = 2,
-                        Score = 17124,
-                        Rank = 5,
-                        UnitIdx = 1,
-                        UpdatedAt = 1749572724,
-                    },
-                    new Stage
-                    {
-                        Uid = 50443924,
-                        StageId = 101102,
-                        Status = 2,
-                        Score = 17124,
-                        Rank = 5,
-                        UnitIdx = 1,
-                        UpdatedAt = 1749572833,
-                    },
-                },
                 HomeBackground =
                 {
                     new HomeBackground
@@ -229,53 +196,6 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
                     LastLineupUpdateDate = 1749572315,
                     LastResetDate = 1749572315
                 },
-                WorkLineup =
-                {
-                    new WorkLineup
-                    {
-                        Id = 371496484,
-                        Uid = 50443924,
-                        WorkId = 1010028,
-                        Status = 0,
-                        ExpectValue = 0,
-                        Result = 0,
-                        LottedConditionId1 = 0,
-                        LottedConditionId2 = 0,
-                        LottedConditionId3 = 0,
-                        CardIds = "",
-                        CardResults = "",
-                        MvpCardId = 0,
-                        LottedRewardSeqIds1 = "1",
-                        LottedRewardSeqIds2 = "1",
-                        LottedRewardSeqIds3 = "1",
-                        StartDate = 1749572317,
-                        EndDate = 1749572317,
-                        ShortMin = 0,
-                        AddCoin = 0
-                    },
-                    new WorkLineup
-                    {
-                        Id = 371496485,
-                        Uid = 50443924,
-                        WorkId = 1030016,
-                        Status = 0,
-                        ExpectValue = 0,
-                        Result = 0,
-                        LottedConditionId1 = 0,
-                        LottedConditionId2 = 0,
-                        LottedConditionId3 = 0,
-                        CardIds = "",
-                        CardResults = "",
-                        MvpCardId = 0,
-                        LottedRewardSeqIds1 = "1",
-                        LottedRewardSeqIds2 = "1",
-                        LottedRewardSeqIds3 = "1",
-                        StartDate = 1749572317,
-                        EndDate = 1749572317,
-                        ShortMin = 0,
-                        AddCoin = 0
-                    }
-                },
                 HomePicture = new HomePicture()
                 {
 
@@ -283,24 +203,6 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
                 TeamBattlePuzzle = new TeamBattlePuzzle()
                 {
 
-                },
-                AppIcon =
-                {
-                    new AppIcon { Uid = 50443924, AppIconId = 1 },
-                    new AppIcon { Uid = 50443924, AppIconId = 2 },
-                    new AppIcon { Uid = 50443924, AppIconId = 3 },
-                    new AppIcon { Uid = 50443924, AppIconId = 4 },
-                    new AppIcon { Uid = 50443924, AppIconId = 5 },
-                    new AppIcon { Uid = 50443924, AppIconId = 6 },
-                    new AppIcon { Uid = 50443924, AppIconId = 7 },
-                    new AppIcon { Uid = 50443924, AppIconId = 8 },
-                    new AppIcon { Uid = 50443924, AppIconId = 9 },
-                    new AppIcon { Uid = 50443924, AppIconId = 10 },
-                    new AppIcon { Uid = 50443924, AppIconId = 11 },
-                    new AppIcon { Uid = 50443924, AppIconId = 12 },
-                    new AppIcon { Uid = 50443924, AppIconId = 13 },
-                    new AppIcon { Uid = 50443924, AppIconId = 14 },
-                    new AppIcon { Uid = 50443924, AppIconId = 15 }
                 },
                 HomeActor = {
                     new HomeActor
@@ -366,79 +268,6 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
                     PuzzleSkipCount = 0,
                     PuzzleSkippedAt = 1749485876
                 },
-                HomeMemberClothes =
-                {
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 92 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 123 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 161 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 163 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 164 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 165 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 202 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 215 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 224 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 235 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 303 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 335 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 402 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 463 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 472 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 482 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 484 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 554 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 571 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 584 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 664 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 691 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 783 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 785 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 801 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 822 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 841 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 843 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 844 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 882 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 884 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 885 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 903 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 934 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 942 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 951 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 953 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 1011 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 1013 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 1022 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 1094 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 1112 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 1144 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 1155 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 1162 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 1183 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 1185 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 1241 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 1292 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 1305 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 1333 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 1353 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 11 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 142 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 144 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 145 },
-                    new HomeMemberClothes { Uid = 50443924, ClothesId = 153 }
-                },
-                HomeMemberTapMotion =
-                {
-                    new HomeMemberTapMotion { Uid = 50443924, TapMotionId = 110 },
-                    new HomeMemberTapMotion { Uid = 50443924, TapMotionId = 111 },
-                    new HomeMemberTapMotion { Uid = 50443924, TapMotionId = 120 },
-                    new HomeMemberTapMotion { Uid = 50443924, TapMotionId = 121 },
-                    new HomeMemberTapMotion { Uid = 50443924, TapMotionId = 130 },
-                    new HomeMemberTapMotion { Uid = 50443924, TapMotionId = 131 },
-                    new HomeMemberTapMotion { Uid = 50443924, TapMotionId = 140 },
-                    new HomeMemberTapMotion { Uid = 50443924, TapMotionId = 141 },
-                    new HomeMemberTapMotion { Uid = 50443924, TapMotionId = 150 },
-                    new HomeMemberTapMotion { Uid = 50443924, TapMotionId = 151 }
-                },
                 BondsSeasonRanking = new BondsSeasonRanking()
                 {
                     SeasonId = 56,
@@ -453,152 +282,6 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
                     Score = 0,
                     Rank = 0
                 },
-                PhotoStamp =
-                {
-                    new PhotoStamp { Uid = 50443924, PhotoStampId = 50001 },
-                    new PhotoStamp { Uid = 50443924, PhotoStampId = 50002 },
-                    new PhotoStamp { Uid = 50443924, PhotoStampId = 50003 },
-                    new PhotoStamp { Uid = 50443924, PhotoStampId = 50004 },
-                    new PhotoStamp { Uid = 50443924, PhotoStampId = 50005 }
-                },
-                Advertising =
-                {
-                    new Advertising
-                    {
-                        Uid = 50443924,
-                        AdvertisingId = 1,
-                        ViewCount = 0,
-                        RewardCountRemaining = 0,
-                        LastResetAt = 1750378118,
-                        LastViewedAt = 0
-                    },
-                    new Advertising
-                    {
-                        Uid = 50443924,
-                        AdvertisingId = 2,
-                        ViewCount = 0,
-                        RewardCountRemaining = 0,
-                        LastResetAt = 1750410319,
-                        LastViewedAt = 0
-                    },
-                    new Advertising
-                    {
-                        Uid = 50443924,
-                        AdvertisingId = 4,
-                        ViewCount = 0,
-                        RewardCountRemaining = 0,
-                        LastResetAt = 1750378118,
-                        LastViewedAt = 0
-                    },
-                    new Advertising
-                    {
-                        Uid = 50443924,
-                        AdvertisingId = 5,
-                        ViewCount = 0,
-                        RewardCountRemaining = 0,
-                        LastResetAt = 1750378118,
-                        LastViewedAt = 0
-                    },
-                    new Advertising
-                    {
-                        Uid = 50443924,
-                        AdvertisingId = 6,
-                        ViewCount = 0,
-                        RewardCountRemaining = 0,
-                        LastResetAt = 1750378118,
-                        LastViewedAt = 0
-                    },
-                    new Advertising
-                    {
-                        Uid = 50443924,
-                        AdvertisingId = 8,
-                        ViewCount = 0,
-                        RewardCountRemaining = 0,
-                        LastResetAt = 1750378118,
-                        LastViewedAt = 0
-                    },
-                    new Advertising
-                    {
-                        Uid = 50443924,
-                        AdvertisingId = 9,
-                        ViewCount = 0,
-                        RewardCountRemaining = 0,
-                        LastResetAt = 1750378118,
-                        LastViewedAt = 0
-                    },
-                    new Advertising
-                    {
-                        Uid = 50443924,
-                        AdvertisingId = 10,
-                        ViewCount = 0,
-                        RewardCountRemaining = 0,
-                        LastResetAt = 1750410319,
-                        LastViewedAt = 0
-                    },
-                    new Advertising
-                    {
-                        Uid = 50443924,
-                        AdvertisingId = 11,
-                        ViewCount = 0,
-                        RewardCountRemaining = 0,
-                        LastResetAt = 1750378118,
-                        LastViewedAt = 0
-                    },
-                    new Advertising
-                    {
-                        Uid = 50443924,
-                        AdvertisingId = 10074,
-                        ViewCount = 0,
-                        RewardCountRemaining = 0,
-                        LastResetAt = 1750378118,
-                        LastViewedAt = 0
-                    },
-                    new Advertising
-                    {
-                        Uid = 50443924,
-                        AdvertisingId = 10081,
-                        ViewCount = 0,
-                        RewardCountRemaining = 0,
-                        LastResetAt = 1750378118,
-                        LastViewedAt = 0
-                    },
-                    new Advertising
-                    {
-                        Uid = 50443924,
-                        AdvertisingId = 10082,
-                        ViewCount = 0,
-                        RewardCountRemaining = 0,
-                        LastResetAt = 1750378118,
-                        LastViewedAt = 0
-                    },
-                    new Advertising
-                    {
-                        Uid = 50443924,
-                        AdvertisingId = 11823,
-                        ViewCount = 0,
-                        RewardCountRemaining = 0,
-                        LastResetAt = 1750378118,
-                        LastViewedAt = 0
-                    },
-                    new Advertising
-                    {
-                        Uid = 50443924,
-                        AdvertisingId = 11824,
-                        ViewCount = 0,
-                        RewardCountRemaining = 0,
-                        LastResetAt = 1750378118,
-                        LastViewedAt = 0
-                    },
-                    new Advertising
-                    {
-                        Uid = 50443924,
-                        AdvertisingId = 11831,
-                        ViewCount = 0,
-                        RewardCountRemaining = 0,
-                        LastResetAt = 1750378118,
-                        LastViewedAt = 0
-                    }
-                },
                 CookingSummary = new CookingSummary()
                 {
                     Uid = 0,
@@ -607,7 +290,7 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
                 MemberLikabilitylevelFlag = new MemberLikabilitylevelFlag()
                 {
 
-                }
+                },
             };
 
             data.Clear.AddRange(user.Clear);
@@ -622,6 +305,13 @@ namespace YotsubaBestGirl.GameServer.Controllers.Api.ProtocolHandlers
             data.GachaHistory.AddRange(user.GachaHistory.ToProtoList());
             data.Card.AddRange(user.Cards.ToProtoList());
             data.Book.AddRange(user.Books.ToProtoList());
+            data.Advertising.AddRange(user.Advertising.ToProtoList());
+            data.Stage.AddRange(user.Stages.ToProtoList());
+            data.PhotoStamp.AddRange(user.PhotoStamps.ToProtoList());
+            data.HomeMemberClothes.AddRange(user.HomeMemberClothes.ToProtoList());
+            data.HomeMemberTapMotion.AddRange(user.HomeMemberTapMotions.ToProtoList());
+            data.WorkLineup.AddRange(user.WorkLineups.ToProtoList());
+            data.AppIcon.AddRange(user.AppIcons.ToProtoList());
 
             return data;
         }
